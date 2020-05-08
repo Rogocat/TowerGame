@@ -5,51 +5,44 @@ using UnityEngine.UI;
 
 public class Crusor : MonoBehaviour
 {
-    //public GameObject cursor; //drag n drop UI object in inspector
-    //public Canvas canvas; //drag n drop canvas in inspector
-    //float pixelX;
-    //float pixelY;
-    //float posX;
-    //float posY;
-
     public float speed = 10;
-
-    float borderXLeft = -900f;
-    float borderXRight = 900f;
-    float borderYLeft = -900f;
-    float borderYRight = 900f;
-
-    public float distance = 2000f;
+    float distance = 50f;
 
     public GameObject cruso;
 
     public LayerMask IgnoreRaycast;
+
+   public Material mat;
+    Color Defaultcolor;
+
     void Start()
     {
-     
+        Defaultcolor = mat.GetColor("_Color");
     }
+
     void Update()
     {
+        if (cruso.tag == "Player1")
+        {
+            float h = Input.GetAxisRaw("Mouse X");
+            float v = Input.GetAxisRaw("Mouse Y");
 
+            cruso.transform.position = new Vector2(transform.position.x + (h * speed * Time.deltaTime), transform.position.y + (v * speed * Time.deltaTime));
+        }
 
-        Vector3 newPosition = transform.position;
+        if (cruso.tag == "Player2")
+        {
+            float h = Input.GetAxisRaw("Mouse X2");
+            float v = Input.GetAxisRaw("Mouse Y2");
 
-        newPosition.x += Input.GetAxis("Mouse X") * speed * Time.deltaTime;
-        newPosition.x = Mathf.Clamp(newPosition.x, borderXLeft, borderXRight);
-
-        newPosition.y += Input.GetAxis("Mouse Y") * speed * Time.deltaTime;
-        newPosition.y = Mathf.Clamp(newPosition.y, borderYLeft, borderYRight);
-
-
-        transform.position = newPosition;
-
-
-   
+            cruso.transform.position = new Vector2(transform.position.x + (h * speed * Time.deltaTime), transform.position.y + (v * speed * Time.deltaTime));
+        }
     }
 
     void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Joystick1Button1))
+        //SHOOT PLAYER 1
+        if (Input.GetKeyDown(KeyCode.Joystick1Button7))
         {
             Ray ray = Camera.main.ScreenPointToRay(cruso.transform.position);
             RaycastHit hit;
@@ -61,11 +54,38 @@ public class Crusor : MonoBehaviour
 
                 if (hit.collider.gameObject.tag == "Player2")
                 {
-                    Debug.Log("HIT PLAYER");
+                    Debug.Log("HIT PLAYER 2");
+                    mat.SetColor("_Color", Color.yellow);
+                    Invoke("SetColor", 0.5f);
+                }
+
+            }
+        }
+        //SHOOT PLAYER 2
+        if (Input.GetKeyDown(KeyCode.Joystick2Button7))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(cruso.transform.position);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, distance, ~IgnoreRaycast))
+            {
+
+                Debug.DrawLine(ray.origin, hit.point);
+                Debug.Log(hit.point);
+
+                if (hit.collider.gameObject.tag == "Player1")
+                {
+                    Debug.Log("HIT PLAYER 1");
+                    mat.SetColor("_Color", Color.yellow);
+                    Invoke("SetColor", 0.5f);
                 }
 
             }
         }
     }
 
+    void SetColor()
+    {
+        mat.SetColor("_Color", Defaultcolor);
+    }
 }
+
