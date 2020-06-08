@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Crusor : MonoBehaviour
+public class Crusorr : MonoBehaviour
 {
     public float speed = 10;
     float distance = 50f;
 
     public GameObject cruso;
+
+    public Vector3 currenthitpoint1;
+
+    public Vector3 currenthitpoint2;
 
     public LayerMask IgnoreRaycast;
 
@@ -51,6 +55,8 @@ public class Crusor : MonoBehaviour
 
                 Debug.DrawLine(ray.origin, hit.point);
                 Debug.Log(hit.point);
+                currenthitpoint1 = hit.point;
+
 
                 if (hit.collider.gameObject.tag == "Player2")
                 {
@@ -71,6 +77,7 @@ public class Crusor : MonoBehaviour
 
                 Debug.DrawLine(ray.origin, hit.point);
                 Debug.Log(hit.point);
+                currenthitpoint2 = hit.point;
 
                 if (hit.collider.gameObject.tag == "Player1")
                 {
