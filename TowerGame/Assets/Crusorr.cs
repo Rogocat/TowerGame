@@ -19,6 +19,7 @@ public class Crusorr : MonoBehaviour
    public Material mat;
     Color Defaultcolor;
 
+    public GameObject prefabthrow;
     void Start()
     {
         Defaultcolor = mat.GetColor("_Color");
@@ -26,6 +27,9 @@ public class Crusorr : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.S))
+            Instantiate(prefabthrow, new Vector3(0f,2f,1f), cruso.transform.rotation);
+
         if (cruso.tag == "Player1")
         {
             float h = Input.GetAxisRaw("Mouse X");

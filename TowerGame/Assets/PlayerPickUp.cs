@@ -28,6 +28,8 @@ public class PlayerPickUp : MonoBehaviour
 
         rigidbody = GetComponent<Rigidbody>();
 
+        PlayerOne = GameObject.FindWithTag("Player1");
+        PlayerTwo = GameObject.FindWithTag("Player2");
         
     }
 
